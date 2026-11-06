@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PancasilaNet - Platform Etika Digital Berbasis Pancasila</title>
+    <link rel="icon" type="image/png" href="garuda-pancasila.png">
+    <!-- Tailwind CSS -->
+    <script src="script.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome & Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-patriot-crimson selection:text-white">
+
+    <!-- TOP HEADER / BRAND NAVIGATION -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-20 flex items-center justify-between gap-3 py-3">
+            
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-4 cursor-pointer" onclick="switchTab('dashboard')">
+                <img src="garuda-pancasila.png" alt="Lambang Garuda Pancasila" class="brand-logo w-12 h-12 shrink-0">
+                <div>
+                    <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+                            <span class="font-black text-base sm:text-xl tracking-wider text-white">Pancasila<span class="brand-net">Net</span></span>
+                    </div>
+                    <span class="text-xs text-slate-400 font-medium block">Platform Etika Digital Berbasis Pancasila</span>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center gap-2">
+                <button id="theme-toggle" onclick="toggleTheme()" aria-label="Aktifkan mode gelap" aria-pressed="false" title="Aktifkan mode gelap" class="theme-toggle h-10 w-10 rounded-xl border border-slate-200 bg-white text-slate-600 flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-moon" aria-hidden="true"></i>
+                </button>
+                <button id="menu-toggle" onclick="toggleMobileMenu()" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobile-menu" class="menu-toggle h-10 px-3 rounded-xl border border-slate-200 bg-white text-slate-700 flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-solid fa-bars text-base" aria-hidden="true"></i>
+                    <span class="hidden sm:inline text-xs font-semibold">Menu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Compact Navigation Menu -->
+        <div id="mobile-menu" class="nav-menu hidden glass-panel border-b border-slate-800 px-4 py-4 space-y-2">
+            <button onclick="switchTab('dashboard'); toggleMobileMenu()" id="nav-dashboard" class="nav-btn active w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
+                <i class="fa-solid fa-chart-pie w-5 mr-2 text-blue-600"></i>Dashboard
+            </button>
+            <button onclick="switchTab('matriks'); toggleMobileMenu()" id="nav-matriks" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
+                <i class="fa-solid fa-shapes w-5 mr-2 text-rose-600"></i>Matriks 5 Sila
+            </button>
+            <button onclick="switchTab('simulator'); toggleMobileMenu()" id="nav-simulator" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
+                <i class="fa-solid fa-flask-vial w-5 mr-2 text-cyan-600"></i>Lab Dilema Etika
+            </button>
+            <button onclick="switchTab('aksi'); toggleMobileMenu()" id="nav-aksi" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
+                <i class="fa-solid fa-shield-heart w-5 mr-2 text-amber-600"></i>Aksi Nyata
+            </button>
+            <button onclick="switchTab('komitmen'); toggleMobileMenu()" id="nav-komitmen" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
+                <i class="fa-solid fa-comments w-5 mr-2 text-emerald-600"></i>Dinding Komitmen
+            </button>
+            <button onclick="switchTab('saring'); toggleMobileMenu()" id="nav-saring" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
+                <i class="fa-solid fa-filter w-5 mr-2 text-violet-600"></i>Panduan Verifikasi
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO PRESENTATION BARNER -->
+    <div class="relative bg-gradient-to-r from-patriot-navy via-patriot-dark to-slate-900 border-b border-slate-800 py-10 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <!-- Background Ambient Lights -->
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-patriot-crimson/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-patriot-gold/15 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-between gap-8 relative z-10">
+            <div class="space-y-3 text-center xl:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-patriot-crimson/20 border border-patriot-crimson/40 text-patriot-crimsonGlow text-xs font-bold tracking-widest uppercase">
+                    <i class="fa-solid fa-book-open"></i> Literasi Digital Berlandaskan Nilai Pancasila
+                </div>
+                <h1 class="text-3xl sm:text-4xl xl:text-5xl font-black tracking-tight text-white leading-tight">
+                    Bijak Berdigital, <span class="text-transparent bg-clip-text bg-gradient-to-r from-patriot-gold to-amber-200">Berpancasila</span>
+                </h1>
+                <p class="text-slate-300 text-sm sm:text-base max-w-2xl font-light leading-relaxed">
+                    Sistem ini dibuat sebagai media edukasi interaktif untuk membantu masyarakat memahami etika bermedia sosial dan menerapkan nilai-nilai Pancasila di ruang digital.
+                </p>
+            </div>
+
+            <!-- Action Buttons for Presenter -->
+            <div class="flex flex-col sm:flex-row gap-3 w-full xl:w-auto justify-center xl:justify-start">
+                <button onclick="switchTab('simulator')" class="w-full sm:w-auto px-4 sm:px-6 py-3.5 rounded-xl bg-gradient-to-r from-patriot-crimson to-red-600 hover:from-red-600 hover:to-patriot-crimson text-white font-bold text-sm shadow-glowRed transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-play"></i> Mulai Demo Simulator
+                </button>
+                <button onclick="switchTab('matriks')" class="w-full sm:w-auto px-4 sm:px-6 py-3.5 rounded-xl bg-patriot-card hover:bg-slate-800 border border-slate-700 text-white font-semibold text-sm transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-book-open"></i> Eksplorasi 5 Sila
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN BODY CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ================= TAB 1: EXECUTIVE DASHBOARD ================= -->
+        <section id="tab-dashboard" class="tab-content space-y-8">
+            
+            <!-- Executive Statistics Widgets -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                
+                <div class="glass-panel rounded-2xl p-5 border-l-4 border-patriot-accent flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Indeks Literasi Digital</span>
+                        <span class="text-2xl font-extrabold text-white mt-1 block">3.54 <span class="text-xs font-normal text-emerald-400">/ 5.00 (Sedang)</span></span>
+                        <span class="text-[11px] text-slate-400 mt-1 block">Sumber: Kominfo RI 2024</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-patriot-accent/10 text-patriot-accent flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-5 border-l-4 border-patriot-crimson flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Temuan Kasus Hoaks/Tahun</span>
+                        <span class="text-2xl font-extrabold text-white mt-1 block">2,256+ <span class="text-xs font-normal text-patriot-crimson">Tinggi</span></span>
+                        <span class="text-[11px] text-slate-400 mt-1 block">Didominasi Isu Politik & SARA</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-patriot-crimson/10 text-patriot-crimson flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-5 border-l-4 border-patriot-gold flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Pancasila Digital Index</span>
+                        <span class="text-2xl font-extrabold text-white mt-1 block">78.4% <span class="text-xs font-normal text-patriot-gold">Target Optimal</span></span>
+                        <span class="text-[11px] text-slate-400 mt-1 block">Pengamalan Nilai Etika</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-patriot-gold/10 text-patriot-gold flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-5 border-l-4 border-emerald-500 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Landasan Etika Digital</span>
+                        <span class="text-2xl font-extrabold text-white mt-1 block">5 Sila</span>
+                        <span class="text-[11px] text-slate-400 mt-1 block">Bijak bermedia, berlandaskan Pancasila</span>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Key Challenges Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Main Statement -->
+                <div class="lg:col-span-2 glass-panel-glow rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden">
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 rounded-full bg-patriot-crimson text-white font-bold text-xs">ISU KRUSIAL</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white">Ancaman Penyalahgunaan Media Sosial Saat Ini</h2>
+                    </div>
+
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Perkembangan teknologi digital membawa peluang besar sekaligus tantangan moral serius. Tanpa adanya koridor etika berbasis nilai-nilai Pancasila, media sosial berisiko menjadi arena polarisasi, ujaran kebencian, perundungan siber (*cyberbullying*), dan pelanggaran hak cipta.
+                    </p>
+
+                    <!-- Issue Highlights Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="p-4 rounded-2xl bg-patriot-navy/90 border border-slate-700/80 flex items-start gap-3">
+                            <i class="fa-solid fa-radiation text-patriot-crimson text-lg mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-sm text-white">Polarisasi & Disinformasi</h4>
+                                <p class="text-xs text-slate-400 mt-1">Berita hoaks yang dirancang memecah belah persatuan dan kerukunan berbangsa.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-patriot-navy/90 border border-slate-700/80 flex items-start gap-3">
+                            <i class="fa-solid fa-user-ninja text-patriot-gold text-lg mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-sm text-white">Cyberbullying & Doxxing</h4>
+                                <p class="text-xs text-slate-400 mt-1">Serangan kehormatan dan penyebaran data pribadi secara tanpa izin.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-patriot-navy/90 border border-slate-700/80 flex items-start gap-3">
+                            <i class="fa-solid fa-comments-dollar text-patriot-accent text-lg mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-sm text-white">Penipuan & Kejahatan Siber</h4>
+                                <p class="text-xs text-slate-400 mt-1">Modus penipuan finansial, pencurian identitas, dan penyalahgunaan AI.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-patriot-navy/90 border border-slate-700/80 flex items-start gap-3">
+                            <i class="fa-solid fa-copyright text-emerald-400 text-lg mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-sm text-white">Pelanggaran Hak Cipta</h4>
+                                <p class="text-xs text-slate-400 mt-1">Plagiarisme karya kreatif tanpa memberikan penghargaan yang adil.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4 Pilar Literasi Digital Infographic Widget -->
+                <div class="glass-panel rounded-3xl p-6 space-y-5">
+                    <h3 class="font-bold text-lg text-white flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-patriot-gold"></i> 4 Pilar Literasi Digital
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div class="p-3.5 rounded-xl bg-patriot-navy border border-patriot-crimson/40">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-bold text-patriot-crimsonGlow uppercase">1. Digital Ethics (Etika Digital)</span>
+                                <span class="text-[10px] bg-patriot-crimson/20 text-patriot-crimson px-2 py-0.5 rounded">Fokus Utama</span>
+                            </div>
+                            <p class="text-xs text-slate-300">Kemampuan mengontrol diri dan beretika sesuai Pancasila.</p>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-patriot-navy border border-slate-700">
+                            <span class="text-xs font-bold text-patriot-gold uppercase block mb-1">2. Digital Culture (Budaya Digital)</span>
+                            <p class="text-xs text-slate-300">Membangun wawasan kebangsaan dan Bhinneka Tunggal Ika.</p>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-patriot-navy border border-slate-700">
+                            <span class="text-xs font-bold text-patriot-accent uppercase block mb-1">3. Digital Safety (Keamanan Digital)</span>
+                            <p class="text-xs text-slate-300">Memproteksi identitas digital dan data pribadi dari kejahatan.</p>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-patriot-navy border border-slate-700">
+                            <span class="text-xs font-bold text-emerald-400 uppercase block mb-1">4. Digital Skills (Kecakapan Digital)</span>
+                            <p class="text-xs text-slate-300">Menguasai perangkat keras dan lunak secara efektif.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: 5 SILA COMPREHENSIVE MATRIX ================= -->
+        <section id="tab-matriks" class="tab-content hidden space-y-8">
+            <div class="text-center max-w-3xl mx-auto space-y-2">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Matriks Etika Digital Berbasis 5 Sila</h2>
+                <p class="text-slate-400 text-sm">Klik pada setiap Sila untuk mempelajari nilai etika, panduan Do's & Don'ts, serta aspek hukum UU ITE.</p>
+            </div>
+
+            <!-- Sila Selector Buttons -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                <button onclick="selectSilaTab(1)" id="sila-btn-1" class="sila-select-btn p-4 rounded-2xl glass-panel border border-patriot-gold text-center hover:border-patriot-gold transition-all group active">
+                    <div class="w-10 h-10 rounded-xl bg-patriot-gold/20 text-patriot-gold font-black text-lg mx-auto flex items-center justify-center mb-2 group-hover:bg-patriot-gold group-hover:text-slate-900 transition-colors">1</div>
+                    <span class="text-xs font-bold text-white block">Ketuhanan</span>
+                    <span class="text-[10px] text-slate-400 block mt-0.5">Toleransi & Adab</span>
+                </button>
+
+                <button onclick="selectSilaTab(2)" id="sila-btn-2" class="sila-select-btn p-4 rounded-2xl glass-panel border border-slate-800 text-center hover:border-patriot-crimson transition-all group">
+                    <div class="w-10 h-10 rounded-xl bg-patriot-crimson/20 text-patriot-crimson font-black text-lg mx-auto flex items-center justify-center mb-2 group-hover:bg-patriot-crimson group-hover:text-white transition-colors">2</div>
+                    <span class="text-xs font-bold text-white block">Kemanusiaan</span>
+                    <span class="text-[10px] text-slate-400 block mt-0.5">Anti-Cyberbullying</span>
+                </button>
+
+                <button onclick="selectSilaTab(3)" id="sila-btn-3" class="sila-select-btn p-4 rounded-2xl glass-panel border border-slate-800 text-center hover:border-emerald-500 transition-all group">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 font-black text-lg mx-auto flex items-center justify-center mb-2 group-hover:bg-emerald-500 group-hover:text-slate-900 transition-colors">3</div>
+                    <span class="text-xs font-bold text-white block">Persatuan</span>
+                    <span class="text-[10px] text-slate-400 block mt-0.5">Anti-Hoaks & NKRI</span>
+                </button>
+
+                <button onclick="selectSilaTab(4)" id="sila-btn-4" class="sila-select-btn p-4 rounded-2xl glass-panel border border-slate-800 text-center hover:border-patriot-accent transition-all group">
+                    <div class="w-10 h-10 rounded-xl bg-patriot-accent/20 text-patriot-accent font-black text-lg mx-auto flex items-center justify-center mb-2 group-hover:bg-patriot-accent group-hover:text-slate-900 transition-colors">4</div>
+                    <span class="text-xs font-bold text-white block">Musyawarah</span>
+                    <span class="text-[10px] text-slate-400 block mt-0.5">Etika Berpendapat</span>
+                </button>
+
+                <button onclick="selectSilaTab(5)" id="sila-btn-5" class="sila-select-btn p-4 rounded-2xl glass-panel border border-slate-800 text-center hover:border-purple-400 transition-all group col-span-2 sm:col-span-1">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 font-black text-lg mx-auto flex items-center justify-center mb-2 group-hover:bg-purple-500 group-hover:text-slate-900 transition-colors">5</div>
+                    <span class="text-xs font-bold text-white block">Keadilan</span>
+                    <span class="text-[10px] text-slate-400 block mt-0.5">Hak Cipta & HAKI</span>
+                </button>
+            </div>
+
+            <!-- Dynamic Sila Display Box -->
+            <div id="sila-content-box" class="glass-panel-glow rounded-3xl p-6 sm:p-8 space-y-6">
+                <!-- Content injected via JS -->
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: ETHICS DILEMMA SIMULATOR ================= -->
+        <section id="tab-simulator" class="tab-content hidden space-y-8">
+            <div class="text-center max-w-3xl mx-auto space-y-2">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Laboratorium Dilema Etika Digital</h2>
+                <p class="text-slate-400 text-sm">Hadapi 10 kasus acak seputar etika digital dan nilai Pancasila tanpa pengulangan dalam satu putaran. Karena tidak menggunakan server, pengunjung di perangkat berbeda masih mungkin mendapat kasus yang sama.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto glass-panel rounded-3xl border border-slate-700/80 overflow-hidden shadow-2xl">
+                <!-- Scenario Header -->
+                <div class="bg-gradient-to-r from-patriot-navy to-slate-900 p-4 sm:p-6 border-b border-slate-800 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                    <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-xl bg-patriot-crimson/20 text-patriot-crimson flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-flask text-lg"></i>
+                        </span>
+                        <div>
+                            <span id="sim-scenario-num" class="text-xs font-bold text-patriot-gold uppercase tracking-wider block">Kasus acak</span>
+                            <h3 id="sim-scenario-title" class="text-lg font-bold text-white">Loading...</h3>
+                        </div>
+                    </div>
+                    <span id="sim-sila-tag" class="text-xs font-bold px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-patriot-accent">Sila #1</span>
+                </div>
+
+                <div class="p-6 sm:p-8 space-y-6">
+                    <!-- Scenario Narrative -->
+                    <div class="bg-patriot-navy/80 p-5 rounded-2xl border border-slate-700 text-slate-200 text-sm leading-relaxed" id="sim-scenario-desc">
+                        Loading deskripsi kasus...
+                    </div>
+
+                    <!-- Interactive Options -->
+                    <div class="space-y-3" id="sim-options-container">
+                        <!-- Options generated via JS -->
+                    </div>
+
+                    <!-- Decision Evaluation Result Box -->
+                    <div id="sim-result-box" class="hidden rounded-2xl p-6 space-y-4 border animate-fade-in">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span id="sim-result-badge" class="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Hasil Keputusan</span>
+                                <h4 id="sim-result-heading" class="text-lg font-bold text-white mt-2">Pilihan Evaluasi</h4>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs text-slate-400 block">Dampak Pancasila Index</span>
+                                <span id="sim-result-score" class="text-xl font-black text-patriot-gold">+25 Poin</span>
+                            </div>
+                        </div>
+
+                        <p id="sim-result-text" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
+
+                        <!-- Legal & Philosophical Impact -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs">
+                                <span class="font-bold text-patriot-accent block mb-1"><i class="fa-solid fa-gavel mr-1"></i> Aspek Hukum (UU ITE):</span>
+                                <span id="sim-result-legal" class="text-slate-400">Pasal UU ITE...</span>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs">
+                                <span class="font-bold text-patriot-gold block mb-1"><i class="fa-solid fa-heart-pulse mr-1"></i> Dampak Sosial:</span>
+                                <span id="sim-result-social" class="text-slate-400">Dampak sosial...</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 text-right">
+                            <button onclick="nextSimScenario()" class="px-6 py-2.5 rounded-xl bg-patriot-crimson hover:bg-red-600 text-white font-bold text-sm shadow-glowRed transition-all">
+                                Kasus Acak Berikutnya <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: DIGITAL ACTION GUIDE ================= -->
+        <section id="tab-aksi" class="tab-content hidden space-y-8">
+            <div class="text-center max-w-3xl mx-auto space-y-2">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Aksi Nyata: Bijak Berdigital, Berpancasila</h2>
+                <p class="text-slate-400 text-sm">Wujudkan nilai Pancasila melalui kebiasaan sederhana sebelum, saat, dan setelah beraktivitas di ruang digital.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+                <article class="digital-action-card digital-action-check rounded-3xl p-6 space-y-4">
+                    <div class="digital-action-icon">
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                        <span>01</span>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-extrabold text-white">Saring Sebelum Sharing</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed">Periksa sumber, tanggal, konteks, dan keaslian gambar. Jangan teruskan informasi yang belum terverifikasi.</p>
+                    </div>
+                    <span class="digital-action-value"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Menjaga persatuan</span>
+                </article>
+
+                <article class="digital-action-card digital-action-respect rounded-3xl p-6 space-y-4">
+                    <div class="digital-action-icon">
+                        <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                        <span>02</span>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-extrabold text-white">Utamakan Adab dan Empati</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed">Sampaikan pendapat dengan santun, hormati perbedaan, jaga privasi, dan jangan ikut menyebarkan perundungan.</p>
+                    </div>
+                    <span class="digital-action-value"><i class="fa-solid fa-people-group" aria-hidden="true"></i> Menghargai sesama</span>
+                </article>
+
+                <article class="digital-action-card digital-action-credit rounded-3xl p-6 space-y-4">
+                    <div class="digital-action-icon">
+                        <i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>
+                        <span>03</span>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-extrabold text-white">Bertanggung Jawab</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed">Cantumkan sumber dan hargai hak cipta. Jika terlanjur membagikan kekeliruan, segera koreksi dan luruskan.</p>
+                    </div>
+                    <span class="digital-action-value"><i class="fa-solid fa-check-double" aria-hidden="true"></i> Adil dan bertanggung jawab</span>
+                </article>
+            </div>
+
+            <div class="digital-action-callout glass-panel rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-5">
+                <div class="text-center sm:text-left space-y-1">
+                    <h3 class="text-lg font-extrabold text-white">Perubahan dimulai dari diri sendiri</h3>
+                    <p class="text-sm text-slate-400">Pilih satu kebiasaan baik dan mulai terapkan setiap kali beraktivitas di internet.</p>
+                </div>
+                <button onclick="switchTab('komitmen')" class="shrink-0 px-5 py-3 rounded-xl bg-patriot-crimson hover:bg-red-600 text-white font-bold text-sm transition-all">
+                    <i class="fa-solid fa-pen-nib mr-2" aria-hidden="true"></i>Buat Komitmen
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: REAL-TIME PLEDGE WALL ================= -->
+        <section id="tab-komitmen" class="tab-content hidden space-y-8">
+            <div class="text-center max-w-3xl mx-auto space-y-2">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Dinding Komitmen Berdigital</h2>
+                <p class="text-slate-400 text-sm">Tuliskan ikrar komitmen Anda untuk menjadi agen perubahan di ruang siber Indonesia.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Input Form -->
+                <div class="glass-panel-glow rounded-3xl p-6 h-fit space-y-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-pen-nib text-patriot-crimson"></i> Ikrar Komitmen Baru
+                    </h3>
+                    
+                    <form onsubmit="submitPledge(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Nama Lengkap</label>
+                            <input type="text" id="input-pledge-name" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-2.5 rounded-xl bg-patriot-navy border border-slate-700 text-white text-sm focus:border-patriot-crimson focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Instansi / Kota</label>
+                            <input type="text" id="input-pledge-instansi" required placeholder="Contoh: Universitas Indonesia / Jakarta" class="w-full px-4 py-2.5 rounded-xl bg-patriot-navy border border-slate-700 text-white text-sm focus:border-patriot-crimson focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Fokus Sila Pancasila</label>
+                            <select id="input-pledge-sila" class="w-full px-4 py-2.5 rounded-xl bg-patriot-navy border border-slate-700 text-white text-sm focus:border-patriot-crimson focus:outline-none">
+                                <option value="Sila 1">Sila 1 - Toleransi Digital & Anti Hate Speech</option>
+                                <option value="Sila 2">Sila 2 - Anti Cyberbullying & Empati Siber</option>
+                                <option value="Sila 3">Sila 3 - Anti Hoaks & Menjaga Persatuan NKRI</option>
+                                <option value="Sila 4">Sila 4 - Musyawarah & Netiket Berpendapat</option>
+                                <option value="Sila 5">Sila 5 - Menghormati Hak Cipta & HAKI Karya</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Pernyataan Komitmen</label>
+                            <textarea id="input-pledge-text" required rows="3" placeholder="Saya berkomitmen untuk..." class="w-full px-4 py-2.5 rounded-xl bg-patriot-navy border border-slate-700 text-white text-sm focus:border-patriot-crimson focus:outline-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3 rounded-xl bg-patriot-crimson hover:bg-red-600 text-white font-bold text-sm shadow-glowRed transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Publikasikan Komitmen
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Display Wall Feed -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-wall-paper text-patriot-gold"></i> Ikrar Peserta Sosialisasi
+                        </span>
+                        <span id="pledge-total-count" class="text-xs bg-patriot-crimson/20 text-patriot-crimsonGlow border border-patriot-crimson/40 px-3 py-1 rounded-full font-bold">4 Komitmen</span>
+                    </div>
+
+                    <div id="pledge-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Dynamic Pledges Loaded Here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 6: SARING SEBELUM SHARING GUIDE ================= -->
+        <section id="tab-saring" class="tab-content hidden space-y-8">
+            <div class="text-center max-w-3xl mx-auto space-y-2">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Panduan Strategis "Saring Sebelum Sharing"</h2>
+                <p class="text-slate-400 text-sm">Metode 5 langkah verifikasi cepat informasi untuk membendung penyebaran hoaks di media sosial.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+                <!-- Step 1 -->
+                <div class="glass-panel p-5 rounded-2xl border-t-4 border-patriot-crimson space-y-3">
+                    <span class="w-8 h-8 rounded-lg bg-patriot-crimson text-white font-black flex items-center justify-center text-sm">1</span>
+                    <h4 class="font-bold text-white text-sm">Cek Sumber Berita</h4>
+                    <p class="text-xs text-slate-300">Apakah informasi berasal dari media pers terverifikasi Dewan Pers atau domain resmi pemerintah (.go.id)?</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="glass-panel p-5 rounded-2xl border-t-4 border-patriot-gold space-y-3">
+                    <span class="w-8 h-8 rounded-lg bg-patriot-gold text-slate-900 font-black flex items-center justify-center text-sm">2</span>
+                    <h4 class="font-bold text-white text-sm">Waspadai Judul Provokatif</h4>
+                    <p class="text-xs text-slate-300">Berita hoaks sering menggunakan judul sensasional, huruf kapital berlebihan, dan provokasi emosional.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="glass-panel p-5 rounded-2xl border-t-4 border-patriot-accent space-y-3">
+                    <span class="w-8 h-8 rounded-lg bg-patriot-accent text-slate-900 font-black flex items-center justify-center text-sm">3</span>
+                    <h4 class="font-bold text-white text-sm">Periksa Visual & Foto</h4>
+                    <p class="text-xs text-slate-300">Gunakan *Google Reverse Image Search* untuk memastikan foto/video tidak direkayasa atau dipotong konteksnya.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="glass-panel p-5 rounded-2xl border-t-4 border-emerald-500 space-y-3">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-500 text-slate-900 font-black flex items-center justify-center text-sm">4</span>
+                    <h4 class="font-bold text-white text-sm">Konfirmasi Cek Fakta</h4>
+                    <p class="text-xs text-slate-300">Kunjungi platform pencegah hoaks terpercaya seperti TurnBackHoax.id, CekFakta.com, atau Kominfo Fact Check.</p>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="glass-panel p-5 rounded-2xl border-t-4 border-purple-500 space-y-3">
+                    <span class="w-8 h-8 rounded-lg bg-purple-500 text-white font-black flex items-center justify-center text-sm">5</span>
+                    <h4 class="font-bold text-white text-sm">Pertimbangkan Manfaat</h4>
+                    <p class="text-xs text-slate-300">Tanyakan pada diri sendiri: "Apakah informasi ini bermanfaat dan tidak memecah belah persatuan?"</p>
+                </div>
+            </div>
+
+            <!-- Print / Download Summary Handout Generator -->
+            <div class="glass-panel-glow rounded-3xl p-5 sm:p-8 flex flex-col xl:flex-row items-center justify-between gap-6 border border-patriot-gold/30">
+                <div class="space-y-2 text-center md:text-left">
+                    <h3 class="text-xl font-bold text-white">Unduh Handout Ringkasan Sosialisasi</h3>
+                    <p class="text-slate-300 text-sm max-w-xl">Dapatkan dokumen ringkasan materi Etika Digital Berbasis Pancasila lengkap dalam format siap cetak/simpan untuk peserta sosialisasi.</p>
+                </div>
+                <button onclick="downloadHandoutTXT()" class="w-full sm:w-auto px-4 sm:px-6 py-3.5 rounded-xl bg-patriot-gold hover:bg-patriot-goldHover text-slate-900 font-bold text-sm shadow-glowGold transition-all flex items-center justify-center gap-2 whitespace-normal sm:whitespace-nowrap">
+                    <i class="fa-solid fa-file-arrow-down text-lg"></i> Unduh Handout Panduan (.TXT)
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-patriot-navy border-t border-slate-800 py-6 text-slate-500 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 footer-inner">
+            <div class="footer-brand">
+                <p class="font-bold text-slate-300">PancasilaNet</p>
+                <p class="footer-tagline">
+                    <svg class="footer-copyright-icon" viewBox="0 0 20 20" fill="none" role="img" aria-label="Copyright">
+                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M12.6 7.7a3 3 0 1 0 0 4.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span>Platform Sosialisasi Etika Digital Berbasis Pancasila</span>
+                </p>
+            </div>
+            <div class="footer-details">
+                <p class="footer-credit">
+                    <span>Dibuat dengan</span>
+                    <svg class="footer-code-icon" viewBox="0 0 24 24" fill="none" aria-label="ikon kode" role="img">
+                    <path d="m8 7-5 5 5 5M16 7l5 5-5 5m-3-13-2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>dan</span>
+                    <svg class="footer-js-icon" viewBox="0 0 32 32" aria-label="logo JavaScript" role="img">
+                    <rect width="32" height="32" rx="5" fill="currentColor"/>
+                    <path d="M17.1 24.2c.6 1 1.3 1.5 2.5 1.5 1 0 1.6-.5 1.6-1.2 0-.8-.6-1.1-1.7-1.6l-.6-.3c-1.8-.8-3-1.8-3-3.9 0-1.9 1.5-3.4 3.8-3.4 1.7 0 2.9.6 3.8 2.1l-2.1 1.4c-.5-.8-.9-1.1-1.7-1.1-.7 0-1.1.4-1.1.9 0 .7.4 1 1.4 1.4l.6.3c2.1.9 3.3 1.8 3.3 4 0 2.3-1.8 3.6-4.3 3.6-2.4 0-3.9-1.1-4.7-2.6l2.2-1.1ZM7.6 24.4c.4.7.8 1.3 1.8 1.3.9 0 1.4-.4 1.4-1.8v-8.4h2.7v8.4c0 2.8-1.6 4.1-4 4.1-2.1 0-3.4-1.1-4-2.5l2.1-1.1Z" fill="#fff"/>
+                    </svg>
+                </p>
+                <p class="footer-timestamp">
+                    <time id="footer-current-date" class="footer-date" aria-live="polite"></time>
+                    <span aria-hidden="true">·</span>
+                    <time id="footer-current-time" class="footer-date" aria-label="Jam saat ini"></time>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    
+</body>
+</html>
