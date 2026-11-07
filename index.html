@@ -21,51 +21,103 @@
     <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-20 flex items-center justify-between gap-3 py-3">
             
-            <!-- Brand Logo -->
-            <div class="flex items-center space-x-4 cursor-pointer" onclick="switchTab('dashboard')">
-                <img src="garuda-pancasila.png" alt="Lambang Garuda Pancasila" class="brand-logo w-12 h-12 shrink-0">
-                <div>
-                    <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
-                            <span class="font-black text-base sm:text-xl tracking-wider text-white">Pancasila<span class="brand-net">Net</span></span>
+            <div class="header-desktop-box">
+                <!-- Brand Logo -->
+                <div class="header-brand flex items-center space-x-4 cursor-pointer" onclick="switchTab('dashboard')">
+                    <img src="garuda-pancasila.png" alt="Lambang Garuda Pancasila" class="brand-logo w-12 h-12 shrink-0">
+                    <div>
+                        <span class="brand-title font-black text-base sm:text-xl tracking-wider text-white">Pancasila<span class="brand-net">Net</span></span>
                     </div>
-                    <span class="text-xs text-slate-400 font-medium block">Platform Etika Digital Berbasis Pancasila</span>
                 </div>
             </div>
 
             <!-- Header Actions -->
-            <div class="flex items-center gap-2">
+            <div class="header-actions flex items-center gap-2">
                 <button id="theme-toggle" onclick="toggleTheme()" aria-label="Aktifkan mode gelap" aria-pressed="false" title="Aktifkan mode gelap" class="theme-toggle h-10 w-10 rounded-xl border border-slate-200 bg-white text-slate-600 flex items-center justify-center transition-all">
                     <i class="fa-solid fa-moon" aria-hidden="true"></i>
+                </button>
+                <button id="system-log-toggle" onclick="openSystemLog()" aria-label="Buka log sistem" title="Log Sistem" class="system-log-toggle h-10 px-3 rounded-xl border border-slate-200 bg-white text-slate-700 flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
+                    <span class="hidden sm:inline text-xs font-semibold">Log Sistem</span>
                 </button>
                 <button id="menu-toggle" onclick="toggleMobileMenu()" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobile-menu" class="menu-toggle h-10 px-3 rounded-xl border border-slate-200 bg-white text-slate-700 flex items-center justify-center gap-2 transition-all">
                     <i class="fa-solid fa-bars text-base" aria-hidden="true"></i>
                     <span class="hidden sm:inline text-xs font-semibold">Menu</span>
                 </button>
             </div>
+
         </div>
 
         <!-- Compact Navigation Menu -->
         <div id="mobile-menu" class="nav-menu hidden glass-panel border-b border-slate-800 px-4 py-4 space-y-2">
-            <button onclick="switchTab('dashboard'); toggleMobileMenu()" id="nav-dashboard" class="nav-btn active w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
+            <button onclick="switchTab('dashboard'); toggleMobileMenu()" id="nav-dashboard" data-tab="dashboard" class="nav-btn active w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
                 <i class="fa-solid fa-chart-pie w-5 mr-2 text-blue-600"></i>Dashboard
             </button>
-            <button onclick="switchTab('matriks'); toggleMobileMenu()" id="nav-matriks" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
+            <button onclick="switchTab('matriks'); toggleMobileMenu()" id="nav-matriks" data-tab="matriks" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
                 <i class="fa-solid fa-shapes w-5 mr-2 text-rose-600"></i>Matriks 5 Sila
             </button>
-            <button onclick="switchTab('simulator'); toggleMobileMenu()" id="nav-simulator" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
+            <button onclick="switchTab('simulator'); toggleMobileMenu()" id="nav-simulator" data-tab="simulator" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
                 <i class="fa-solid fa-flask-vial w-5 mr-2 text-cyan-600"></i>Lab Dilema Etika
             </button>
-            <button onclick="switchTab('aksi'); toggleMobileMenu()" id="nav-aksi" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
+            <button onclick="switchTab('aksi'); toggleMobileMenu()" id="nav-aksi" data-tab="aksi" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
                 <i class="fa-solid fa-shield-heart w-5 mr-2 text-amber-600"></i>Aksi Nyata
             </button>
-            <button onclick="switchTab('komitmen'); toggleMobileMenu()" id="nav-komitmen" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
+            <button onclick="switchTab('komitmen'); toggleMobileMenu()" id="nav-komitmen" data-tab="komitmen" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
                 <i class="fa-solid fa-comments w-5 mr-2 text-emerald-600"></i>Dinding Komitmen
             </button>
-            <button onclick="switchTab('saring'); toggleMobileMenu()" id="nav-saring" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
+            <button onclick="switchTab('saring'); toggleMobileMenu()" id="nav-saring" data-tab="saring" class="nav-btn w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 transition-all">
                 <i class="fa-solid fa-filter w-5 mr-2 text-violet-600"></i>Panduan Verifikasi
             </button>
         </div>
     </header>
+
+    <dialog id="system-log-dialog" class="system-log-dialog" aria-labelledby="system-log-title">
+        <div class="system-log-content">
+            <div class="system-log-heading">
+                <div>
+                    <span class="system-log-eyebrow">PANCASILANET</span>
+                    <h2 id="system-log-title">Log Sistem</h2>
+                    <p>Riwayat fitur dan penyempurnaan platform.</p>
+                </div>
+                <button type="button" class="system-log-close" onclick="closeSystemLog()" aria-label="Tutup log sistem">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <section class="system-log-section" aria-labelledby="system-updates-title">
+                <h3 id="system-updates-title"><i class="fa-solid fa-list-check" aria-hidden="true"></i> Pembaruan Sistem</h3>
+                <ol class="system-update-list">
+                    <li>
+                        <span class="system-update-icon"><i class="fa-solid fa-compass" aria-hidden="true"></i></span>
+                        <div><h4>Navigasi dan tema</h4><p>Navbar responsif, pilihan tema terang/gelap, dan penanda menu aktif.</p></div>
+                    </li>
+                    <li>
+                        <span class="system-update-icon"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i></span>
+                        <div><h4>Interaksi halaman</h4><p>Animasi mengetik pada judul utama dan efek kemunculan konten saat halaman digulir.</p></div>
+                    </li>
+                    <li>
+                        <span class="system-update-icon"><i class="fa-solid fa-shapes" aria-hidden="true"></i></span>
+                        <div><h4>Matriks etika Pancasila</h4><p>Penyempurnaan warna penanda nilai pada setiap sila agar lebih mudah dikenali.</p></div>
+                    </li>
+                    <li>
+                        <span class="system-update-icon"><i class="fa-solid fa-id-card" aria-hidden="true"></i></span>
+                        <div><h4>Identitas platform</h4><p>Penambahan lambang Garuda pada footer dan profil pengembang di log sistem.</p></div>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="developer-card" aria-labelledby="developer-title">
+                <img src="alif.jpg" alt="Foto M. Alif Ramadhan" class="developer-photo" id="developer-photo">
+                <div class="developer-photo-fallback" id="developer-photo-fallback" aria-hidden="true">MR</div>
+                <div class="developer-copy">
+                    <span class="system-log-eyebrow">DEVELOPED BY</span>
+                    <h3 id="developer-title">M. Alif Ramadhan</h3>
+                    <p class="developer-role">Project Lead <span aria-hidden="true">·</span> Full Stack Developer</p>
+                    <p class="developer-description">Merancang dan mengembangkan PancasilaNet sebagai ruang belajar etika digital yang interaktif, inklusif, dan berlandaskan nilai-nilai Pancasila.</p>
+                </div>
+            </section>
+        </div>
+    </dialog>
 
     <!-- HERO PRESENTATION BARNER -->
     <div class="relative bg-gradient-to-r from-patriot-navy via-patriot-dark to-slate-900 border-b border-slate-800 py-10 px-4 sm:px-6 lg:px-8 overflow-hidden">
@@ -73,13 +125,19 @@
         <div class="absolute -top-24 -left-24 w-96 h-96 bg-patriot-crimson/20 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-patriot-gold/15 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-between gap-8 relative z-10">
+        <div class="hero-content max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-between gap-8 relative z-10">
             <div class="space-y-3 text-center xl:text-left">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-patriot-crimson/20 border border-patriot-crimson/40 text-patriot-crimsonGlow text-xs font-bold tracking-widest uppercase">
-                    <i class="fa-solid fa-book-open"></i> Literasi Digital Berlandaskan Nilai Pancasila
+                <div class="hero-literacy-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-patriot-crimson/20 border border-patriot-crimson/40 text-patriot-crimsonGlow text-xs font-bold tracking-widest uppercase" aria-label="Literasi Digital Berlandaskan Nilai Pancasila">
+                    <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                    <span class="hero-literacy-marquee" aria-hidden="true">
+                        <span class="hero-literacy-track">
+                            <span>Literasi Digital Berlandaskan Nilai Pancasila</span>
+                            <span>Literasi Digital Berlandaskan Nilai Pancasila</span>
+                        </span>
+                    </span>
                 </div>
-                <h1 class="text-3xl sm:text-4xl xl:text-5xl font-black tracking-tight text-white leading-tight">
-                    Bijak Berdigital, <span class="text-transparent bg-clip-text bg-gradient-to-r from-patriot-gold to-amber-200">Berpancasila</span>
+                <h1 id="hero-title" aria-label="Bijak Berdigital, Berpancasila" class="text-3xl sm:text-4xl xl:text-5xl font-black tracking-tight text-white leading-tight">
+                    <span class="hero-title-prefix" aria-hidden="true">Bijak Berdigital,</span><span class="hero-title-highlight text-transparent bg-clip-text bg-gradient-to-r from-patriot-gold to-amber-200" aria-hidden="true">Berpancasila</span><span class="hero-title-caret" aria-hidden="true"></span>
                 </h1>
                 <p class="text-slate-300 text-sm sm:text-base max-w-2xl font-light leading-relaxed">
                     Sistem ini dibuat sebagai media edukasi interaktif untuk membantu masyarakat memahami etika bermedia sosial dan menerapkan nilai-nilai Pancasila di ruang digital.
@@ -87,11 +145,11 @@
             </div>
 
             <!-- Action Buttons for Presenter -->
-            <div class="flex flex-col sm:flex-row gap-3 w-full xl:w-auto justify-center xl:justify-start">
-                <button onclick="switchTab('simulator')" class="w-full sm:w-auto px-4 sm:px-6 py-3.5 rounded-xl bg-gradient-to-r from-patriot-crimson to-red-600 hover:from-red-600 hover:to-patriot-crimson text-white font-bold text-sm shadow-glowRed transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+            <div class="hero-actions flex flex-col sm:flex-row gap-3 w-full xl:w-auto justify-center xl:justify-start">
+                <button onclick="switchTab('simulator')" class="hero-action-button w-full sm:w-auto px-4 sm:px-6 py-3.5 rounded-xl bg-gradient-to-r from-patriot-crimson to-red-600 hover:from-red-600 hover:to-patriot-crimson text-white font-bold text-sm shadow-glowRed transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
                     <i class="fa-solid fa-play"></i> Mulai Demo Simulator
                 </button>
-                <button onclick="switchTab('matriks')" class="w-full sm:w-auto px-4 sm:px-6 py-3.5 rounded-xl bg-patriot-card hover:bg-slate-800 border border-slate-700 text-white font-semibold text-sm transition-all flex items-center justify-center gap-2">
+                <button onclick="switchTab('matriks')" class="hero-action-button w-full sm:w-auto px-4 sm:px-6 py-3.5 rounded-xl bg-patriot-card hover:bg-slate-800 border border-slate-700 text-white font-semibold text-sm transition-all flex items-center justify-center gap-2">
                     <i class="fa-solid fa-book-open"></i> Eksplorasi 5 Sila
                 </button>
             </div>
@@ -111,23 +169,23 @@
                     <div>
                         <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Indeks Literasi Digital</span>
                         <span class="text-2xl font-extrabold text-white mt-1 block">3.54 <span class="text-xs font-normal text-emerald-400">/ 5.00 (Sedang)</span></span>
-                        <span class="text-[11px] text-slate-400 mt-1 block">Sumber: Kominfo RI 2024</span>
+                        <span class="text-[11px] text-slate-400 mt-1 block">Sumber: Komdigi • data 2024</span>
                     </div>
                     <div class="w-12 h-12 rounded-xl bg-patriot-accent/10 text-patriot-accent flex items-center justify-center text-xl">
                         <i class="fa-solid fa-chart-line"></i>
                     </div>
                 </div>
 
-                <div class="glass-panel rounded-2xl p-5 border-l-4 border-patriot-crimson flex items-center justify-between">
+                <a href="https://www.komdigi.go.id/berita/berita-hoaks" target="_blank" rel="noopener noreferrer" class="glass-panel rounded-2xl p-5 border-l-4 border-patriot-crimson flex items-center justify-between dashboard-source-card">
                     <div>
-                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Temuan Kasus Hoaks/Tahun</span>
-                        <span class="text-2xl font-extrabold text-white mt-1 block">2,256+ <span class="text-xs font-normal text-patriot-crimson">Tinggi</span></span>
-                        <span class="text-[11px] text-slate-400 mt-1 block">Didominasi Isu Politik & SARA</span>
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block">Daftar Berita Hoaks</span>
+                        <span class="dashboard-source-card-title text-2xl font-extrabold text-white mt-1 block">Buka data terbaru</span>
+                        <span class="text-[11px] text-slate-400 mt-1 block">Sumber: Komdigi • diperbarui di situs resmi</span>
                     </div>
                     <div class="w-12 h-12 rounded-xl bg-patriot-crimson/10 text-patriot-crimson flex items-center justify-center text-xl">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
                     </div>
-                </div>
+                </a>
 
                 <div class="glass-panel rounded-2xl p-5 border-l-4 border-patriot-gold flex items-center justify-between">
                     <div>
@@ -153,38 +211,101 @@
 
             </div>
 
+            <section class="factcheck-panel" aria-labelledby="factcheck-title">
+                <div class="factcheck-heading">
+                    <div>
+                        <span class="factcheck-eyebrow"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> CEK FAKTA DARI SUMBER RESMI</span>
+                        <h2 id="factcheck-title">Cek dulu kebenaran informasi</h2>
+                        <p>Jangan langsung membagikan klaim. Cari klarifikasi, baca bukti, lalu cocokkan dengan kanal resmi.</p>
+                    </div>
+                    <a class="factcheck-source-link" href="https://www.komdigi.go.id/berita/berita-hoaks" target="_blank" rel="noopener noreferrer">
+                        <span>Lihat daftar klarifikasi Komdigi</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                    </a>
+                </div>
+
+                <div class="factcheck-steps" aria-label="Langkah memeriksa informasi">
+                    <span><b>1</b> Temukan klaim</span>
+                    <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    <span><b>2</b> Baca klarifikasi</span>
+                    <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    <span><b>3</b> Cek sumber asli</span>
+                </div>
+
+                <div class="factcheck-cases">
+                    <article class="factcheck-case">
+                        <div class="factcheck-case-meta"><span>Klarifikasi Komdigi</span><time datetime="2026-11-03">3 November 2026</time></div>
+                        <h3>Tautan program bantuan rumah gratis</h3>
+                        <p><strong>Hasil klarifikasi:</strong> Tautan yang beredar mengarah ke formulir yang meminta data pribadi, bukan jalur resmi bantuan perumahan.</p>
+                        <a href="https://www.komdigi.go.id/berita/berita-hoaks/detail/hoaks-tautan-program-bantuan-rumah-gratis" target="_blank" rel="noopener noreferrer">Baca klarifikasi <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                    </article>
+                    <article class="factcheck-case">
+                        <div class="factcheck-case-meta"><span>Klarifikasi Komdigi</span><time datetime="2026-11-03">3 November 2026</time></div>
+                        <h3>Bawang merah disebut bisa mengobati diabetes tipe 1</h3>
+                        <p><strong>Hasil klarifikasi:</strong> Tidak benar. Bawang merah tidak dapat menggantikan insulin atau obat dari dokter untuk diabetes tipe 1.</p>
+                        <a href="https://www.komdigi.go.id/berita/berita-hoaks/detail/hoaks-rutin-konsumsi-bawang-merah-bisa-obati-diabetes-tipe-1" target="_blank" rel="noopener noreferrer">Baca klarifikasi <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                    </article>
+                    <article class="factcheck-case">
+                        <div class="factcheck-case-meta"><span>Klarifikasi Komdigi</span><time datetime="2026-11-04">4 November 2026</time></div>
+                        <h3>Video Yenny Wahid diklaim menyatakan bergabung dengan PSI</h3>
+                        <p><strong>Hasil klarifikasi:</strong> Tidak benar. Video tersebut potongan wawancara lama; Yenny menjelaskan suaminya yang bergabung, bukan dirinya.</p>
+                        <a href="https://www.komdigi.go.id/berita/berita-hoaks/detail/hoaks-video-yenny-wahid-menyatakan-bergabung-dengan-psi" target="_blank" rel="noopener noreferrer">Baca klarifikasi <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                    </article>
+                    <article class="factcheck-case">
+                        <div class="factcheck-case-meta"><span>Klarifikasi Komdigi</span><time datetime="2026-11-04">4 November 2026</time></div>
+                        <h3>Foto Wapres Gibran menyerahkan uang kepada Raffi Ahmad dan Willie Salim</h3>
+                        <p><strong>Hasil klarifikasi:</strong> Tidak benar. Foto yang beredar terdeteksi sebagai hasil rekayasa AI.</p>
+                        <a href="https://www.komdigi.go.id/berita/berita-hoaks/detail/hoaks-wapres-gibran-serahkan-uang-ke-raffi-ahmad-dan-willie-salim" target="_blank" rel="noopener noreferrer">Baca klarifikasi <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                    </article>
+                    <article class="factcheck-case">
+                        <div class="factcheck-case-meta"><span>Klarifikasi Komdigi</span><time datetime="2026-11-05">5 November 2026</time></div>
+                        <h3>Klaim harga Pertalite naik menjadi Rp13 ribu</h3>
+                        <p><strong>Hasil klarifikasi:</strong> Tidak benar. Komdigi mengutip bantahan Kementerian ESDM atas kabar kenaikan harga tersebut.</p>
+                        <a href="https://www.komdigi.go.id/berita/berita-hoaks/detail/hoaks-bahlil-umumkan-pertalite-naik-menjadi-rp13-ribu" target="_blank" rel="noopener noreferrer">Baca klarifikasi <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                    </article>
+                    <article class="factcheck-case">
+                        <div class="factcheck-case-meta"><span>Klarifikasi Komdigi</span><time datetime="2026-11-06">6 November 2026</time></div>
+                        <h3>WhatsApp mengatasnamakan pejabat Dispora DKI Jakarta</h3>
+                        <p><strong>Hasil klarifikasi:</strong> Dispora DKI menyatakan nomor tersebut bukan milik pejabatnya; jangan kirim data pribadi atau uang.</p>
+                        <a href="https://www.komdigi.go.id/berita/berita-hoaks/detail/hoaks-akun-whatsapp-mengatasnamakan-kabid-prasarana-dan-sarana-dispora-dki-jakarta-muharram-fajar-nugraha" target="_blank" rel="noopener noreferrer">Baca klarifikasi <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                    </article>
+                </div>
+
+                <p class="factcheck-disclaimer"><strong class="factcheck-disclaimer-emphasis">Contoh di halaman ini belum diperbarui otomatis.</strong> Untuk berita dan klarifikasi terbaru, silakan kunjungi situs resmi Komdigi. PancasilaNet menyajikan contoh edukatif dan belum memeriksa klaim secara otomatis.</p>
+            </section>
+
             <!-- Key Challenges Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 
                 <!-- Main Statement -->
                 <div class="lg:col-span-2 glass-panel-glow rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden">
                     <div class="flex items-center gap-3">
-                        <span class="px-3 py-1 rounded-full bg-patriot-crimson text-white font-bold text-xs">ISU KRUSIAL</span>
+                        <span class="issue-label px-3 py-1 rounded-full font-bold text-xs">ISU KRUSIAL</span>
                         <h2 class="text-xl sm:text-2xl font-bold text-white">Ancaman Penyalahgunaan Media Sosial Saat Ini</h2>
                     </div>
 
                     <p class="text-slate-300 text-sm leading-relaxed">
-                        Perkembangan teknologi digital membawa peluang besar sekaligus tantangan moral serius. Tanpa adanya koridor etika berbasis nilai-nilai Pancasila, media sosial berisiko menjadi arena polarisasi, ujaran kebencian, perundungan siber (*cyberbullying*), dan pelanggaran hak cipta.
+                        Perkembangan teknologi digital membawa peluang besar sekaligus tantangan moral serius. Tanpa adanya koridor etika berbasis nilai-nilai Pancasila, media sosial berisiko menjadi arena polarisasi, ujaran kebencian, perundungan siber (cyberbullying), dan pelanggaran hak cipta.
                     </p>
 
                     <!-- Issue Highlights Grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                         <div class="p-4 rounded-2xl bg-patriot-navy/90 border border-slate-700/80 flex items-start gap-3">
-                            <i class="fa-solid fa-radiation text-patriot-crimson text-lg mt-1"></i>
+                            <i class="fa-solid fa-radiation text-emerald-400 text-lg mt-1"></i>
                             <div>
                                 <h4 class="font-bold text-sm text-white">Polarisasi & Disinformasi</h4>
                                 <p class="text-xs text-slate-400 mt-1">Berita hoaks yang dirancang memecah belah persatuan dan kerukunan berbangsa.</p>
                             </div>
                         </div>
                         <div class="p-4 rounded-2xl bg-patriot-navy/90 border border-slate-700/80 flex items-start gap-3">
-                            <i class="fa-solid fa-user-ninja text-patriot-gold text-lg mt-1"></i>
+                            <i class="fa-solid fa-user-ninja text-emerald-400 text-lg mt-1"></i>
                             <div>
                                 <h4 class="font-bold text-sm text-white">Cyberbullying & Doxxing</h4>
                                 <p class="text-xs text-slate-400 mt-1">Serangan kehormatan dan penyebaran data pribadi secara tanpa izin.</p>
                             </div>
                         </div>
                         <div class="p-4 rounded-2xl bg-patriot-navy/90 border border-slate-700/80 flex items-start gap-3">
-                            <i class="fa-solid fa-comments-dollar text-patriot-accent text-lg mt-1"></i>
+                            <i class="fa-solid fa-comments-dollar text-emerald-400 text-lg mt-1"></i>
                             <div>
                                 <h4 class="font-bold text-sm text-white">Penipuan & Kejahatan Siber</h4>
                                 <p class="text-xs text-slate-400 mt-1">Modus penipuan finansial, pencurian identitas, dan penyalahgunaan AI.</p>
@@ -209,19 +330,19 @@
                     <div class="space-y-3">
                         <div class="p-3.5 rounded-xl bg-patriot-navy border border-patriot-crimson/40">
                             <div class="flex justify-between items-center mb-1">
-                                <span class="text-xs font-bold text-patriot-crimsonGlow uppercase">1. Digital Ethics (Etika Digital)</span>
+                                <span class="text-xs font-bold text-emerald-400 uppercase">1. Digital Ethics (Etika Digital)</span>
                                 <span class="text-[10px] bg-patriot-crimson/20 text-patriot-crimson px-2 py-0.5 rounded">Fokus Utama</span>
                             </div>
                             <p class="text-xs text-slate-300">Kemampuan mengontrol diri dan beretika sesuai Pancasila.</p>
                         </div>
 
                         <div class="p-3.5 rounded-xl bg-patriot-navy border border-slate-700">
-                            <span class="text-xs font-bold text-patriot-gold uppercase block mb-1">2. Digital Culture (Budaya Digital)</span>
+                            <span class="text-xs font-bold text-emerald-400 uppercase block mb-1">2. Digital Culture (Budaya Digital)</span>
                             <p class="text-xs text-slate-300">Membangun wawasan kebangsaan dan Bhinneka Tunggal Ika.</p>
                         </div>
 
                         <div class="p-3.5 rounded-xl bg-patriot-navy border border-slate-700">
-                            <span class="text-xs font-bold text-patriot-accent uppercase block mb-1">3. Digital Safety (Keamanan Digital)</span>
+                            <span class="text-xs font-bold text-emerald-400 uppercase block mb-1">3. Digital Safety (Keamanan Digital)</span>
                             <p class="text-xs text-slate-300">Memproteksi identitas digital dan data pribadi dari kejahatan.</p>
                         </div>
 
@@ -304,6 +425,25 @@
                 </div>
 
                 <div class="p-6 sm:p-8 space-y-6">
+                    <figure id="sim-scenario-visual" class="scenario-visual" role="img">
+                        <div class="scenario-visual-art" aria-hidden="true">
+                            <span class="scenario-visual-orbit"></span>
+                            <span class="scenario-visual-icon"><i id="sim-visual-icon" class="fa-solid fa-triangle-exclamation"></i></span>
+                            <i class="fa-solid fa-sparkles scenario-visual-sparkle"></i>
+                        </div>
+                        <figcaption class="scenario-visual-content">
+                            <span class="scenario-visual-kicker">GAMBARAN KASUS</span>
+                            <strong id="sim-visual-title"></strong>
+                            <div class="scenario-visual-flow" aria-hidden="true">
+                                <span id="sim-visual-step-1"></span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                                <span id="sim-visual-step-2"></span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                                <span id="sim-visual-step-3"></span>
+                            </div>
+                        </figcaption>
+                    </figure>
+
                     <!-- Scenario Narrative -->
                     <div class="bg-patriot-navy/80 p-5 rounded-2xl border border-slate-700 text-slate-200 text-sm leading-relaxed" id="sim-scenario-desc">
                         Loading deskripsi kasus...
@@ -516,7 +656,7 @@
                     <h3 class="text-xl font-bold text-white">Unduh Handout Ringkasan Sosialisasi</h3>
                     <p class="text-slate-300 text-sm max-w-xl">Dapatkan dokumen ringkasan materi Etika Digital Berbasis Pancasila lengkap dalam format siap cetak/simpan untuk peserta sosialisasi.</p>
                 </div>
-                <button onclick="downloadHandoutTXT()" class="w-full sm:w-auto px-4 sm:px-6 py-3.5 rounded-xl bg-patriot-gold hover:bg-patriot-goldHover text-slate-900 font-bold text-sm shadow-glowGold transition-all flex items-center justify-center gap-2 whitespace-normal sm:whitespace-nowrap">
+                <button id="handout-download-button" onclick="downloadHandoutTXT()" class="w-full sm:w-auto px-4 sm:px-6 py-3.5 rounded-xl bg-patriot-gold hover:bg-patriot-goldHover text-slate-900 font-bold text-sm shadow-glowGold transition-all flex items-center justify-center gap-2 whitespace-normal sm:whitespace-nowrap">
                     <i class="fa-solid fa-file-arrow-down text-lg"></i> Unduh Handout Panduan (.TXT)
                 </button>
             </div>
@@ -528,14 +668,14 @@
     <footer class="bg-patriot-navy border-t border-slate-800 py-6 text-slate-500 text-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 footer-inner">
             <div class="footer-brand">
-                <p class="font-bold text-slate-300">PancasilaNet</p>
-                <p class="footer-tagline">
-                    <svg class="footer-copyright-icon" viewBox="0 0 20 20" fill="none" role="img" aria-label="Copyright">
-                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
-                        <path d="M12.6 7.7a3 3 0 1 0 0 4.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                    <span>Platform Sosialisasi Etika Digital Berbasis Pancasila</span>
-                </p>
+                <img src="garuda-pancasila.png" alt="Lambang Garuda Pancasila" class="footer-logo">
+                <div class="footer-brand-copy">
+                    <p class="footer-title font-bold text-slate-300">PancasilaNet</p>
+                    <p class="footer-tagline">
+                        <span>Platform Sosialisasi Etika Digital Berbasis Pancasila</span>
+                        <span class="footer-copyright-text">Copyright 2026</span>
+                    </p>
+                </div>
             </div>
             <div class="footer-details">
                 <p class="footer-credit">

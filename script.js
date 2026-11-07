@@ -50,11 +50,11 @@ window.tailwind.config = {
         // Tab Navigation
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tabId);
+            });
 
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-            const activeNav = document.getElementById(`nav-${tabId}`);
-            if (activeNav) activeNav.classList.add('active');
 
             if (tabId === 'matriks') selectSilaTab(1);
             if (tabId === 'simulator') startRandomSimRun();
@@ -67,8 +67,33 @@ window.tailwind.config = {
             const isOpening = menu.classList.contains('hidden');
 
             menu.classList.toggle('hidden', !isOpening);
-            toggle.setAttribute('aria-expanded', String(isOpening));
             toggle.setAttribute('aria-label', isOpening ? 'Tutup menu navigasi' : 'Buka menu navigasi');
+            toggle.setAttribute('aria-expanded', String(isOpening));
+        }
+
+        function openSystemLog() {
+            const dialog = document.getElementById('system-log-dialog');
+            if (!dialog.open) dialog.showModal();
+        }
+
+        function closeSystemLog() {
+            const dialog = document.getElementById('system-log-dialog');
+            if (dialog.open) dialog.close();
+        }
+
+        function initializeDeveloperPhoto() {
+            const photo = document.getElementById('developer-photo');
+            const fallback = document.getElementById('developer-photo-fallback');
+            if (!photo || !fallback) return;
+
+            photo.addEventListener('error', () => {
+                photo.classList.add('is-missing');
+                fallback.classList.add('is-visible');
+            }, { once: true });
+
+            if (photo.complete && photo.naturalWidth === 0) {
+                photo.dispatchEvent(new Event('error'));
+            }
         }
 
         function toggleTheme() {
@@ -82,12 +107,92 @@ window.tailwind.config = {
             toggle.innerHTML = `<i class="fa-solid ${isDark ? 'fa-sun' : 'fa-moon'}" aria-hidden="true"></i>`;
         }
 
+        function updateHeaderScrollState() {
+            const header = document.querySelector('header');
+            if (!header) return;
+
+            header.classList.toggle('is-scrolled', window.scrollY > 8);
+        }
+
+        function initializeHeroTypewriter() {
+            const prefix = document.querySelector('.hero-title-prefix');
+            const highlight = document.querySelector('.hero-title-highlight');
+            if (!prefix || !highlight) return;
+
+            const prefixText = 'Bijak Berdigital,';
+            const highlightText = 'Berpancasila';
+
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                prefix.textContent = prefixText;
+                highlight.textContent = highlightText;
+                return;
+            }
+
+            let characterCount = 0;
+            let deleting = false;
+
+            function renderTitle() {
+                prefix.textContent = prefixText.slice(0, characterCount);
+                highlight.textContent = highlightText.slice(
+                    0,
+                    Math.max(0, characterCount - prefixText.length)
+                );
+            }
+
+            function typeNextCharacter() {
+                const totalCharacters = prefixText.length + highlightText.length;
+
+                if (!deleting && characterCount === totalCharacters) {
+                    deleting = true;
+                    window.setTimeout(typeNextCharacter, 1800);
+                    return;
+                }
+
+                if (deleting && characterCount === 0) {
+                    deleting = false;
+                    window.setTimeout(typeNextCharacter, 450);
+                    return;
+                }
+
+                characterCount += deleting ? -1 : 1;
+                renderTitle();
+                window.setTimeout(typeNextCharacter, deleting ? 38 : 72);
+            }
+
+            prefix.textContent = '';
+            highlight.textContent = '';
+            typeNextCharacter();
+        }
+
+        function initializeScrollReveal() {
+            if (!('IntersectionObserver' in window)) return;
+
+            const elements = document.querySelectorAll(
+                '.hero-content > *, .tab-content > *, .footer-inner > *'
+            );
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    entry.target.classList.toggle('is-visible', entry.isIntersecting);
+                });
+            }, {
+                threshold: 0.12,
+                rootMargin: '0px 0px -5% 0px'
+            });
+
+            elements.forEach(element => {
+                element.classList.add('scroll-reveal');
+                observer.observe(element);
+            });
+        }
+
+        window.addEventListener('scroll', updateHeaderScrollState, { passive: true });
+
         // Sila Matrix Detailed Data
         const silaMatrixData = {
             1: {
                 title: "Sila 1: Ketuhanan Yang Maha Esa",
                 subtitle: "Toleransi & Adab Beragama di Ruang Digital",
-                colorClass: "patriot-gold",
+                colorClass: "amber-800",
                 dos: [
                     "Menghormati perayaan dan simbol keagamaan pengguna lain di media sosial.",
                     "Menyebarkan konten positif berbasis moralitas dan kedamaian.",
@@ -104,7 +209,7 @@ window.tailwind.config = {
             2: {
                 title: "Sila 2: Kemanusiaan yang Adil dan Beradab",
                 subtitle: "Anti-Cyberbullying & Empati Siber",
-                colorClass: "patriot-crimson",
+                colorClass: "pink-500",
                 dos: [
                     "Menggunakan bahasa yang sopan dan santun saat mengkritik.",
                     "Melindungi data pribadi diri sendiri dan orang lain (Privacy Protection).",
@@ -138,7 +243,7 @@ window.tailwind.config = {
             4: {
                 title: "Sila 4: Kerakyatan yang Dipimpin oleh Hikmat Kebijaksanaan dalam Permusyawaratan/Perwakilan",
                 subtitle: "Musyawarah & Netiket Berpendapat",
-                colorClass: "patriot-accent",
+                colorClass: "blue-400",
                 dos: [
                     "Menyampaikan aspirasi dan kritik secara konstruktif dan etis.",
                     "Menghargai perbedaan opini politik dalam diskusi publik.",
@@ -181,10 +286,10 @@ window.tailwind.config = {
             contentBox.innerHTML = `
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-4">
                     <div>
-                        <span class="text-xs font-extrabold uppercase text-${data.colorClass} tracking-widest">${data.subtitle}</span>
+                        <span data-sila="${silaNum}" class="sila-subtitle text-xs font-extrabold uppercase text-${data.colorClass} tracking-widest">${data.subtitle}</span>
                         <h3 class="text-2xl font-black text-white mt-1">${data.title}</h3>
                     </div>
-                    <span class="px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold text-slate-300">Modul Pembelajaran</span>
+                    <span class="px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold text-slate-300">Penerapan Nilai</span>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -223,6 +328,7 @@ window.tailwind.config = {
         const simScenarios = [
             {
                 title: "Hoaks Berita Kebencanaan Alam",
+                visual: { icon: "fa-tower-broadcast", tone: "alert", title: "Peringatan bencana di grup keluarga", steps: ["Pesan berantai", "Belum terverifikasi", "Risiko panik"] },
                 sila: "Sila #3 Persatuan",
                 desc: "Anda menerima pesan berantai di grup obrolan keluarga yang menyebutkan akan terjadi tsunami susulan dalam 2 jam ke depan akibat gempa di daerah lain. Pesan tersebut tidak menyertakan sumber resmi BMKG dan terlihat sangat provokatif.",
                 options: [
@@ -248,6 +354,7 @@ window.tailwind.config = {
             },
             {
                 title: "Perundungan Siber (Cyberbullying) Rekan Kerja",
+                visual: { icon: "fa-user-shield", tone: "care", title: "Rekan kerja menjadi sasaran perundungan", steps: ["Unggahan menghina", "Dukung korban", "Laporkan konten"] },
                 sila: "Sila #2 Kemanusiaan",
                 desc: "Di media sosial X (Twitter), ada akun anonim yang mengunggah foto rekan kerja Anda disertai ejekan fisik dan tuduhan bohong yang memicu hinaan dari netizen lain.",
                 options: [
@@ -273,6 +380,7 @@ window.tailwind.config = {
             },
             {
                 title: "Plagiarisme Karya Seni Digital AI",
+                visual: { icon: "fa-image", tone: "rights", title: "Karya kreator digunakan untuk komersial", steps: ["Karya berwatermark", "Minta izin", "Cantumkan kredit"] },
                 sila: "Sila #5 Keadilan",
                 desc: "Anda menemukan ilustrasi buatan desainer lokal yang sangat bagus. Anda ingin menggunakannya sebagai poster komersial acara Anda.",
                 options: [
@@ -298,6 +406,7 @@ window.tailwind.config = {
             },
             {
                 title: "Provokasi Kebencian Berbasis SARA",
+                visual: { icon: "fa-people-group", tone: "tolerance", title: "Tuduhan memecah kerukunan", steps: ["Unggahan provokatif", "Periksa sumber", "Jaga kerukunan"] },
                 sila: "Sila #1 Ketuhanan",
                 desc: "Sebuah unggahan di media sosial menuduh kelompok agama tertentu sebagai penyebab masalah di lingkungan sekitar. Unggahan itu belum terbukti, tetapi mulai memancing komentar penuh kebencian.",
                 options: [
@@ -323,6 +432,7 @@ window.tailwind.config = {
             },
             {
                 title: "Perbedaan Pendapat di Forum Warga",
+                visual: { icon: "fa-comments", tone: "dialogue", title: "Perbedaan pendapat di forum daring", steps: ["Pendapat berbeda", "Diskusi santun", "Musyawarah"] },
                 sila: "Sila #4 Kerakyatan",
                 desc: "Dalam forum daring warga, pendapat Anda tentang suatu kebijakan berbeda dengan mayoritas. Sejumlah anggota mulai menyerang pribadi dan meminta Anda diam.",
                 options: [
@@ -348,6 +458,7 @@ window.tailwind.config = {
             },
             {
                 title: "Menyebarkan Tangkapan Layar Percakapan Pribadi",
+                visual: { icon: "fa-user-lock", tone: "privacy", title: "Percakapan pribadi tersebar tanpa izin", steps: ["Data terlihat", "Jaga privasi", "Minta izin"] },
                 sila: "Sila #2 Kemanusiaan",
                 desc: "Seorang teman mengirimkan tangkapan layar percakapan pribadi dengan anggota keluarga yang sedang mengalami masalah. Nama dan nomor telepon terlihat, lalu teman Anda meminta agar gambar itu disebarkan ke grup lain.",
                 options: [
@@ -373,6 +484,7 @@ window.tailwind.config = {
             },
             {
                 title: "Tautan Hadiah yang Meminta Kode OTP",
+                visual: { icon: "fa-link", tone: "security", title: "Tautan hadiah meminta kode rahasia", steps: ["Pesan hadiah", "Permintaan OTP", "Lindungi akun"] },
                 sila: "Sila #5 Keadilan",
                 desc: "Anda menerima pesan yang mengatasnamakan toko daring terkenal. Pesan itu menjanjikan hadiah dan meminta Anda membuka tautan lalu mengirimkan kode OTP untuk mengklaimnya.",
                 options: [
@@ -398,6 +510,7 @@ window.tailwind.config = {
             },
             {
                 title: "Video Deepfake tentang Keadaan Darurat",
+                visual: { icon: "fa-video", tone: "verify", title: "Video darurat belum jelas sumbernya", steps: ["Video viral", "Cek sumber resmi", "Hindari panik"] },
                 sila: "Sila #3 Persatuan",
                 desc: "Sebuah video yang tampak menampilkan pejabat mengumumkan keadaan darurat tersebar luas. Rekaman itu tidak mencantumkan sumber dan berisi ajakan mengungsi, sehingga warga mulai panik.",
                 options: [
@@ -423,6 +536,7 @@ window.tailwind.config = {
             },
             {
                 title: "Serangan Akun Terkoordinasi di Ruang Diskusi",
+                visual: { icon: "fa-users", tone: "dialogue", title: "Komentar seragam menyerang warga", steps: ["Akun menyerang", "Jangan ikut serang", "Laporkan akun"] },
                 sila: "Sila #4 Kerakyatan",
                 desc: "Dalam diskusi kebijakan publik, banyak akun baru mengirim komentar identik dan menyerang pribadi seorang warga yang berbeda pendapat. Anda diminta ikut membalas agar diskusi terlihat ramai.",
                 options: [
@@ -448,6 +562,7 @@ window.tailwind.config = {
             },
             {
                 title: "Konten AI yang Menghina Simbol Keagamaan",
+                visual: { icon: "fa-wand-magic-sparkles", tone: "tolerance", title: "Gambar AI memicu ketegangan", steps: ["Gambar provokatif", "Jangan sebarkan", "Jaga toleransi"] },
                 sila: "Sila #1 Ketuhanan",
                 desc: "Di grup percakapan, seseorang membagikan gambar buatan AI yang mengubah simbol keagamaan menjadi bahan ejekan. Gambar itu diberi keterangan seolah-olah kejadian nyata dan mulai memancing kemarahan.",
                 options: [
@@ -495,6 +610,15 @@ window.tailwind.config = {
             document.getElementById('sim-scenario-title').innerText = sc.title;
             document.getElementById('sim-sila-tag').innerText = sc.sila;
             document.getElementById('sim-scenario-desc').innerText = sc.desc;
+            const visual = document.getElementById('sim-scenario-visual');
+            visual.classList.remove('scenario-visual--alert', 'scenario-visual--care', 'scenario-visual--rights', 'scenario-visual--tolerance', 'scenario-visual--dialogue', 'scenario-visual--privacy', 'scenario-visual--security', 'scenario-visual--verify');
+            visual.classList.add(`scenario-visual--${sc.visual.tone}`);
+            visual.setAttribute('aria-label', `Ilustrasi: ${sc.visual.title}. ${sc.visual.steps.join(', lalu ')}.`);
+            document.getElementById('sim-visual-icon').className = `fa-solid ${sc.visual.icon}`;
+            document.getElementById('sim-visual-title').innerText = sc.visual.title;
+            sc.visual.steps.forEach((step, index) => {
+                document.getElementById(`sim-visual-step-${index + 1}`).innerText = step;
+            });
             document.getElementById('sim-result-box').classList.add('hidden');
             document.querySelector('#sim-result-box button[onclick="nextSimScenario()"]').innerHTML =
                 position === simScenarios.length - 1
@@ -541,8 +665,8 @@ window.tailwind.config = {
 
         // Pledges Data & Wall Render
         let pledgeList = [
-            { name: "Drs. Heru Prasetyo", instansi: "Kemenkominfo", sila: "Sila 3", text: "Saya berkomitmen tidak membagikan berita apa pun sebelum memverifikasi sumber resminya.", likes: 14 },
-            { name: "Anisa Pertiwi", instansi: "Universitas Indonesia", sila: "Sila 2", text: "Saya berjanji menjaga kesantunan di kolom komentar dan menolak segala bentuk cyberbullying.", likes: 21 },
+            { name: "M. Alif Ramadhan", instansi: "Politeknik Negeri Medan", sila: "Sila 3", text: "Saya berkomitmen tidak membagikan berita apa pun sebelum memverifikasi sumber resminya.", likes: 14 },
+            { name: "Andi Josua", instansi: "Universitas Sumatera Utara", sila: "Sila 2", text: "Saya berjanji menjaga kesantunan di kolom komentar dan menolak segala bentuk cyberbullying.", likes: 21 },
             { name: "Rian Hidayat", instansi: "Kreator Konten", sila: "Sila 5", text: "Saya akan selalu menghargai karya seniman lain dengan mencantumkan lisensi dan kredit resmi.", likes: 9 }
         ];
 
@@ -640,6 +764,10 @@ Dokumen Sosialisasi Etika Digital Berbasis Pancasila • 2026
 
         // Initialize App
         window.onload = function() {
+            updateHeaderScrollState();
+            initializeHeroTypewriter();
+            initializeScrollReveal();
+            initializeDeveloperPhoto();
             updateFooterClock();
             window.setInterval(updateFooterClock, 1000);
             selectSilaTab(1);
